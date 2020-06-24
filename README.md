@@ -4,19 +4,23 @@
 
 # Installation
 
-**In order to use this tool, you need to install python3**: https://www.python.org/downloads/ and choose newest version of the installers for your OS:
+**In order to use this tool, you need to install python3**: https://www.python.org/downloads/ and choose newest version of the installers for your OS(select "Add to path" checkbox):
 
 ![alt text](https://i.imgur.com/6t92U3f.png)
 
 
-**For Windows**: from project directory in terminal/ powershell run:
+**For Windows** from project directory in terminal/ powershell run:
+```
+pip install -r requirements.txt
+```
+
+(To do that go to the folder this project is downloaded to and **Shift + right click** then select **Open command windows here**, then just simply paste the text from above(it will install all necessarry modules for python so everything works).
+
+
+**For ubuntu**  you have to:
 
 ```
 pip3 install -r requirements.txt
-```
-**For ubuntu**: additionally you have to:
-
-```
 sudo apt-get install qt
 ```
 

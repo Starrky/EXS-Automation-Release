@@ -24,6 +24,8 @@ pip3 install -r requirements.txt
 sudo apt-get install qt
 ```
 
+**Configs folder is sent personally, since it contains sensitive data**
+
 # Usage
 Main application that can run all the scripts after selection is **APP.py** in root project folder.
 Just start the APP.py, then you will have 3 options:

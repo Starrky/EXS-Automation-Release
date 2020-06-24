@@ -1,0 +1,13 @@
+
+configs/Windows/Payrolls.py
+configs/Windows/Paths.py
+configs/Windows/config.py
+configs/Windows/__init__.py
+configs/Linux/Payrolls.py
+configs/Linux/Paths.py
+configs/Linux/config.py
+configs/Linux/__pycache__/Payrolls.cpython-38.pyc
+configs/Linux/__pycache__/Paths.cpython-38.pyc
+configs/Accounts.py
+configs/__pycache__/Sites.cpython-38.pyc
+configs/__pycache__/Accounts.cpython-38.pyc

@@ -17,4 +17,4 @@ gobject
 PyGObject
 autoit
 runpy2
-runpy
+

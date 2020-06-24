@@ -53,9 +53,17 @@ def script_finished():
 def kill_driver():
     # End chromedriver and chrome ghost processes
     PROCNAME = "chromedriver.exe"
+    PROCNAME2 = "chrome.exe"
 
     for proc in psutil.process_iter():
         # check whether the process name matches
+        # if proc.name() == PROCNAME2:
+        #     try:
+        #         proc.kill()
+        #
+        #     except psutil.NoSuchProcess:
+        #         break
+
         if proc.name() == PROCNAME:
             try:
                 proc.kill()

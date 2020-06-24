@@ -4,7 +4,7 @@
 
 # Installation
 
-**In order to use this tool, you need to install python3**: https://www.python.org/downloads/ and choose newest version of the installers for your OS(select "Add to path" checkbox):
+**In order to use this tool, you need to install python3 and chrome browser and keep it updated**: https://www.python.org/downloads/ and choose newest version of the installers for your OS(select "Add to path" checkbox)[ https://www.google.com/chrome/ ]:
 
 ![alt text](https://i.imgur.com/6t92U3f.png)
 
@@ -34,7 +34,7 @@ Just start the APP.py, then you will have 3 options:
 
 **Translation** - Here you will find translation scripts(summernote add, Change translations, Add new translation). All translations are changed/ added for both Staging and Production server( Dev not included). 
 
-**Kill driver** - Kills driver processes that might still be present in the background.
+**Kill driver** - Kills driver processes that might still be present in the background.( uncomment lines 60-65 in text editor in APP.py if you are not using Chrome browser: this is commented so it won't turn off your personal browser)
 
 # How to use translation scripts
 

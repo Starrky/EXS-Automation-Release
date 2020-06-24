@@ -47,6 +47,7 @@ Just start the APP.py(double click left mouse button), then you will have 3 opti
 ## How to use translation scripts
 
 When you click on Translations button from main menu, new window will appear with usage and looks slightly differing between them. 
+
 ![alt text](https://i.imgur.com/ZcoYIln.png)
 
 If you need to **Change translations** then just simply choose that tab on the top of the window, then you will need to provide: 

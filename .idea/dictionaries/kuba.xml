@@ -2,16 +2,32 @@
   <dictionary name="kuba">
     <words>
       <w>asctime</w>
+      <w>belgia</w>
       <w>chromedriver</w>
+      <w>currentdir</w>
+      <w>deutschland</w>
+      <w>dobps</w>
+      <w>dopc</w>
       <w>extranet</w>
       <w>logins</w>
+      <w>niemcy</w>
+      <w>niemiec</w>
+      <w>osvc</w>
+      <w>osvč</w>
+      <w>parentdir</w>
       <w>pixmap</w>
+      <w>polak</w>
+      <w>polska</w>
       <w>proc</w>
       <w>procname</w>
+      <w>psutil</w>
       <w>rownum</w>
+      <w>rozliczany</w>
       <w>summernote</w>
       <w>threadpool</w>
       <w>xlsx</w>
+      <w>zivnost</w>
+      <w>živnosť</w>
     </words>
   </dictionary>
 </component>

@@ -50,14 +50,15 @@ If you need to **Change translations** then just simply choose that tab on the t
 
 Then you select which domain should be checked(messages and forms are most common) and click **Start**. -- also applies to other tabs 
 
-## Side note
-**(We need old polish/ english translations because most languages already have keys translated and it will confuse their local users to suddenly have something translated to english. So script goes through all languages currently in the system and checks if old translations are existent and if they are then they are changed to new ones.)**
-
 Other tabs(Summernote and Add new) are more simple, since you only have to provide App key and polish+ english translations you want to add to the system.
 
 **Summernote** is used in HTML formatted situations(programmers have to turn on summernote functionality( HTML text editor on key) to the key and it usually looks like this: ```app.access_permission_request_modal.summernote_text``` with './_summernote' at the end.
 
 **Add new** just adds new translations to Polish, English and REF. (Doesn't add to others to speed up the process, since english is default fallback language if key is not translated in other languages) That's also where **Copy translations** from **Automation** menu comes into play- if you already added all the translations you wanted, then just go back to main menu and choose Automation, then **Copy translations** and english translations will be copied over to every other language so they can easily translate those keys later.
+
+## Side note
+**(We need old polish/ english translations because most languages already have keys translated and it will confuse their local users to suddenly have something translated to english. So script goes through all languages currently in the system and checks if old translations are existent and if they are then they are changed to new ones.)**
+
 
 # Folders explanation
 

@@ -4,7 +4,8 @@
 
 # Installation
 
-**In order to use this tool, you need to install python3 and chrome browser and keep it updated**: https://www.python.org/downloads/ and choose newest version of the installers for your OS. 
+**In order to use this tool, you need to install python3 and chrome browser and keep it updated**: https://www.python.org/downloads/ and choose newest version of the installers for your OS.
+
 Chrome download link: https://www.google.com/chrome/ :
 
 ![alt text](https://i.imgur.com/6t92U3f.png)

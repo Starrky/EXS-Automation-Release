@@ -26,7 +26,7 @@ if platform == "Linux" or platform == "Linux2":
     password_dirs = Payrolls.password_dirs
     downloads_loc = os.path.join(os.path.join(os.environ['HOME']), 'Downloads')
 
-elif platform == "win32":
+elif platform == "win32" or "Windows":
     from configs.Windows import Paths
     from configs.Windows import Payrolls
 

@@ -14,7 +14,7 @@ platform = platform.system()
 if platform == "Linux" or "Linux2":
     from configs.Linux import Paths
 
-elif platform == "win32":
+elif platform == "win32" or "Windows":
     from configs.Windows import Paths
 
 copy_list = [Sites.Prod_Copy, Sites.Staging_Copy]

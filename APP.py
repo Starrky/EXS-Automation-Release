@@ -16,15 +16,9 @@ platform = platform.system()
 if platform == "Linux" or "Linux2":
     from configs.Linux import Paths
 
-elif platform == "win32":
+elif platform == "win32" or "Windows":
     from configs.Windows import Paths
 
-
-os.chdir(Paths.logs)
-
-logging.basicConfig(filename=Paths.log_script,
-                    level=logging.INFO, format='%(asctime)s - %(message)s',
-                    datefmt='%d-%m-%y %H:%M')
 
 TIME_LIMIT = 100
 
@@ -515,7 +509,7 @@ class Script_finished_dialog(object):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    app.setStyle("GTK+")
+    app.setStyle("Fusion")
     w = QWidget()
     w.resize(420, 245)
     w.setStyleSheet("background-color: white;")

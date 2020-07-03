@@ -1,20 +1,27 @@
+import os
+import os.path
+import sys
+import platform
 from playsound import playsound
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
+
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
 from configs import Accounts
 from configs import Sites
-import platform
 
 platform = platform.system()
 
-if platform == "Linux" or platform == "Linux2":
-    from configs.Linux import Paths
+if platform == "win32" or "Windows":
+    from configs.Windows import Paths 
 
-elif platform == "win32" or "Windows":
-    from configs.Windows import Paths
+elif platform == "Linux" or "Linux2":
+    from configs.Linux import Paths
 
 
 DRIVER = webdriver.Chrome(ChromeDriverManager().install())
@@ -134,12 +141,11 @@ staging()
 dev()
 
 
-if platform == "Linux" or platform == "Linux2":
-    print("Script completed successfully")
-    DRIVER.stop_client()
-
-elif platform == "win32":
+if platform == "win32" or "Windows":
     print("Script completed successfully")
     playsound(str(Paths.sound))
     DRIVER.stop_client()
 
+elif platform == "Linux" or platform == "Linux2":
+    print("Script completed successfully")
+    DRIVER.stop_client()

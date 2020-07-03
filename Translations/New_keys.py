@@ -3,6 +3,7 @@
 # coding=utf-8
 import logging
 import os
+import sys
 import time
 from urllib.parse import urljoin
 import openpyxl
@@ -13,17 +14,23 @@ from playsound import playsound
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
+import platform
+
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
 from configs import Accounts
 from configs import Sites
-import platform
 
 platform = platform.system()
 
-if platform == "Linux" or "Linux2":
+if platform == "win32" or "Windows":
+    from configs.Windows import Paths
+
+    
+elif platform == "Linux" or "Linux2":
     from configs.Linux import Paths
 
-elif platform == "win32" or "Windows":
-    from configs.Windows import Paths
 
 # Excel logging setup
 os.chdir(Paths.logs)

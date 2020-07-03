@@ -9,15 +9,16 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import platform
-import runpy2 as runpy
+import runpy
 
 platform = platform.system()
 
-if platform == "Linux" or "Linux2":
-    from configs.Linux import Paths
 
-elif platform == "win32" or "Windows":
-    from configs.Windows import Paths
+if platform == "win32" or "Windows":
+    from configs.Windows import Paths 
+
+elif platform == "Linux" or "Linux2":
+    from configs.Linux import Paths
 
 
 TIME_LIMIT = 100

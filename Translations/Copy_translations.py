@@ -1,21 +1,27 @@
 import time
-
+import sys
 import psutil
 import selenium
 import webdriver_manager
 from playsound import playsound
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-from configs import Accounts, Sites
 import platform
+
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
+from configs import Accounts
+from configs import Sites
 
 platform = platform.system()
 
-if platform == "Linux" or "Linux2":
+if platform == "win32" or "Windows":
+    from configs.Windows import Paths
+    
+elif platform == "Linux" or "Linux2":
     from configs.Linux import Paths
 
-elif platform == "win32" or "Windows":
-    from configs.Windows import Paths
 
 copy_list = [Sites.Prod_Copy, Sites.Staging_Copy]
 
@@ -78,15 +84,18 @@ def copy_all():
 
 
 copy_all()
-if platform == "Linux" or platform == "Linux2":
-    DRIVER.stop_client()
-    DRIVER.quit()
-    kill_driver()
-    print("Script completed successfully")
 
-elif platform == "win32":
+if platform == "win32" or "Windows":
     print("Script completed successfully")
     DRIVER.stop_client()
     DRIVER.quit()
     kill_driver()
     playsound(str(Paths.sound))
+    
+elif platform == "Linux" or platform == "Linux2":
+    DRIVER.stop_client()
+    DRIVER.quit()
+    kill_driver()
+    print("Script completed successfully")
+
+

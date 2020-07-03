@@ -1,4 +1,6 @@
 import os
+import os.path
+import sys
 import re
 import shutil
 import time
@@ -11,30 +13,36 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
-from configs import Accounts, Sites
 import platform
+
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
+from configs import Accounts
+from configs import Sites
+
 
 platform = platform.system()
 
-if platform == "Linux" or platform == "Linux2":
-    from configs.Linux import Paths
-    from configs.Linux import Payrolls
-
-    desktop = os.path.join(os.path.join(os.environ['HOME']), 'Desktop')
-    paths_list = Payrolls.paths_list
-    Payrolls = Payrolls
-    password_dirs = Payrolls.password_dirs
-    downloads_loc = os.path.join(os.path.join(os.environ['HOME']), 'Downloads')
-
-elif platform == "win32" or "Windows":
+if platform == "win32" or "Windows":
     from configs.Windows import Paths
     from configs.Windows import Payrolls
 
     desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
     paths_list = Payrolls.paths_list
-    Payrolls = Payrolls
     password_dirs = Payrolls.password_dirs
     downloads_loc = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Downloads')
+
+elif platform == "Linux" or platform == "Linux2":
+    from configs.Linux import Paths
+    from configs.Linux import Payrolls
+
+    desktop = os.path.join(os.path.join(os.environ['HOME']), 'Desktop')
+    paths_list = Payrolls.paths_list
+    password_dirs = Payrolls.password_dirs
+    downloads_loc = os.path.join(os.path.join(os.environ['HOME']), 'Downloads')
+
+
 
 
 def kill_driver():
@@ -314,16 +322,18 @@ def move_files():
 
 move_files()
 
-if platform == "Linux" or platform == "Linux2":
-    DRIVER.stop_client()
-    DRIVER.quit()
-    kill_driver()
-    print("Script completed successfully")
-
-elif platform == "win32":
+if platform == "win32" or "Windows":
     print("Script completed successfully")
     DRIVER.stop_client()
     DRIVER.quit()
     kill_driver()
     playsound.playsound(str(Paths.sound))
+
+else:
+    DRIVER.stop_client()
+    DRIVER.quit()
+    kill_driver()
+    print("Script completed successfully")
+
+
 

@@ -2,6 +2,7 @@
 # !/usr/bin/python3.7.2
 # coding=utf-8
 import os
+import sys
 import time
 from urllib.parse import urljoin
 import openpyxl
@@ -11,17 +12,21 @@ import webdriver_manager.chrome
 from playsound import playsound
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import platform
+
+sys.path.append(
+    os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
+
 from configs import Accounts
 from configs import Sites
-import platform
 
 platform = platform.system()
 
-if platform == "Linux" or platform == "Linux2":
-    from configs.Linux import Paths
-
-elif platform == "win32" or "Windows":
+if platform == "win32" or "Windows":
     from configs.Windows import Paths
+    
+elif platform == "Linux" or platform == "Linux2":
+    from configs.Linux import Paths
 
 
 # Excel logging setup
@@ -225,15 +230,17 @@ def translate():
 
 translate()
 
-if platform == "Linux" or platform == "Linux2":
-    DRIVER.stop_client()
-    DRIVER.quit()
-    kill_driver()
-    print("Script completed successfully")
-
-elif platform == "win32":
+if platform == "win32" or "Windows":
     print("Script completed successfully")
     DRIVER.stop_client()
     DRIVER.quit()
     kill_driver()
     playsound(str(Paths.sound))
+    
+elif platform == "Linux" or platform == "Linux2":
+    DRIVER.stop_client()
+    DRIVER.quit()
+    kill_driver()
+    print("Script completed successfully")
+
+

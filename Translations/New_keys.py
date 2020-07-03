@@ -159,15 +159,17 @@ def translate():
 
 
 translate()
-if platform == "Linux" or platform == "Linux2":
-    DRIVER.stop_client()
-    DRIVER.quit()
-    kill_driver()
-    print("Script completed successfully")
-
-elif platform == "win32":
+if platform == "win32" or "Windows":
     print("Script completed successfully")
     DRIVER.stop_client()
     DRIVER.quit()
     kill_driver()
     playsound(str(Paths.sound))
+    
+elif platform == "Linux" or platform == "Linux2":
+    DRIVER.stop_client()
+    DRIVER.quit()
+    kill_driver()
+    print("Script completed successfully")
+
+

@@ -127,7 +127,6 @@ def change():
     else:
 
         if value == old_pl:
-            print(value)
             field.clear()
             field.send_keys(str(new_en))
             DRIVER.find_element_by_id(str(key)).click()
@@ -174,13 +173,11 @@ def change_pl():
     else:
 
         if value == old_pl:
-            print(value)
             field.clear()
             field.send_keys(str(new_pl))
             DRIVER.find_element_by_id(str(key)).click()
 
         elif value != new_pl:
-            print(value)
             field.clear()
             field.send_keys(str(new_pl))
             DRIVER.find_element_by_id(str(key)).click()

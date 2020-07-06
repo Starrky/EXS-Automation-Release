@@ -24,7 +24,7 @@ from configs import Sites
 
 platform = platform.system()
 
-if platform == "win32" or "Windows":
+if platform == "win32" or platform == "Windows":
     from configs.Windows import Paths
     from configs.Windows import Payrolls
 
@@ -322,7 +322,7 @@ def move_files():
 
 move_files()
 
-if platform == "win32" or "Windows":
+if platform == "win32" or platform == "Windows":
     print("Script completed successfully")
     DRIVER.stop_client()
     DRIVER.quit()
@@ -334,6 +334,3 @@ else:
     DRIVER.quit()
     kill_driver()
     print("Script completed successfully")
-
-
-

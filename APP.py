@@ -14,10 +14,10 @@ import runpy
 platform = platform.system()
 
 
-if platform == "win32" or "Windows":
+if platform == "win32" or platform == "Windows":
     from configs.Windows import Paths 
 
-elif platform == "Linux" or "Linux2":
+elif platform == "Linux" or platform == "Linux2":
     from configs.Linux import Paths
 
 

@@ -144,8 +144,8 @@ dev()
 if platform == "win32" or platform == "Windows":
     print("Script completed successfully")
     playsound(str(Paths.sound))
-    DRIVER.stop_client()
+    DRIVER.quit()
 
 elif platform == "Linux" or platform == "Linux2":
     print("Script completed successfully")
-    DRIVER.stop_client()
+    DRIVER.quit()

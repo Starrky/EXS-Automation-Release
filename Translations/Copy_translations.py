@@ -27,7 +27,7 @@ elif platform == "Linux" or platform == "Linux2":
 
 copy_list = [Sites.Prod_Copy, Sites.Staging_Copy]
 
-logout_list = [Sites.Staging_logout, Sites.Dev_logout, Sites.Prod_logout]
+logout_list = [Sites.Staging_logout, Sites.Prod_logout]
 
 websites_list = [Sites.Prod, Sites.Staging]
 

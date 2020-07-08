@@ -56,11 +56,10 @@ def kill_driver():
 
 websites_list = [Sites.Prod, Sites.Staging]
 logins_list = [Accounts.Prod_user_1, Accounts.Staging_user_2]
-passwords_list = [Accounts.Prod_Password_1, Accounts.Staging_Password_2
-                  ]
+passwords_list = [Accounts.Prod_Password_1, Accounts.Staging_Password_2]
 domains_name = ["", "staging."]
 copy_list = [Sites.Prod_Copy, Sites.Staging_Copy]
-logout_list = [Sites.Staging_logout, Sites.Dev_logout]
+logout_list = [Sites.Staging_logout, Sites.Prod_logout]
 
 # Grab text from launcher
 WB = openpyxl.load_workbook(Paths.XLSX)

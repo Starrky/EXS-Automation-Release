@@ -406,12 +406,20 @@ class Ui_Dialog2:
                 import Other.Change_passwords
                 script_finished()
 
+            if text == 'Add translations from file':
+                import Translations.Loop_add
+
+            if text == 'Change translations from file':
+                import Translations.Loop_chnage
+
         self.comboBox = QtWidgets.QComboBox(Dialog)
-        self.comboBox.setGeometry(QtCore.QRect(130, 210, 160, 21))
+        self.comboBox.setGeometry(QtCore.QRect(110, 210, 190, 21))
         self.comboBox.addItem("-- Script --")
         self.comboBox.addItem("Change passwords")
         self.comboBox.addItem("Payrolls")
         self.comboBox.addItem("Copy Translations")
+        self.comboBox.addItem("Add translations from file")
+        self.comboBox.addItem("Change translations from file")
 
         self.comboBox.setEditable(True)
         line_edit = self.comboBox.lineEdit()

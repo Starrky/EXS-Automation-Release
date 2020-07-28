@@ -17,10 +17,10 @@ from configs import Sites
 
 platform = platform.system()
 
-if platform == "win32" or "Windows":
-    from configs.Windows import Paths 
+if platform == "win32" or platform == "Windows":
+    from configs.Windows import Paths
 
-elif platform == "Linux" or "Linux2":
+elif platform == "Linux" or platform == "Linux2":
     from configs.Linux import Paths
 
 
@@ -122,7 +122,7 @@ def dev():
     DRIVER.find_element_by_id("_submit").click()
 
     Cookies = wait.until(EC.element_to_be_clickable((By.XPATH,
-                                                     "/html/body/div[2]/div[1]/div[1]/div/i")))
+                        "/html/body/div[2]/div[1]/div[1]/div/i")))
     Cookies.click()
     DRIVER.get(Sites.Dev_lang_en)
 
@@ -141,11 +141,11 @@ staging()
 dev()
 
 
-if platform == "win32" or "Windows":
+if platform == "win32" or platform == "Windows":
     print("Script completed successfully")
     playsound(str(Paths.sound))
-    DRIVER.stop_client()
+    DRIVER.quit()
 
 elif platform == "Linux" or platform == "Linux2":
     print("Script completed successfully")
-    DRIVER.stop_client()
+    DRIVER.quit()

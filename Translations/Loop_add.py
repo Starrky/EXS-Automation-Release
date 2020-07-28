@@ -1,7 +1,6 @@
 """Keys and translations changed Prod/ Staging """
 # !/usr/bin/python3.7.2
 # coding=utf-8
-import logging
 import os
 import sys
 import time
@@ -27,13 +26,8 @@ platform = platform.system()
 if platform == "win32" or platform == "Windows":
     from configs.Windows import Paths
 
-
 elif platform == "Linux" or platform == "Linux2":
     from configs.Linux import Paths
-
-
-# Excel logging setup
-os.chdir(Paths.logs)
 
 # Driver settings
 DRIVER = webdriver.Chrome(webdriver_manager.chrome.ChromeDriverManager().install())
@@ -57,71 +51,81 @@ def kill_driver():
 websites_list = [Sites.Prod, Sites.Staging]
 logins_list = [Accounts.Prod_user_1, Accounts.Staging_user_2]
 passwords_list = [Accounts.Prod_Password_1, Accounts.Staging_Password_2]
-domains_name = ["", "staging."]
 copy_list = [Sites.Prod_Copy, Sites.Staging_Copy]
 logout_list = [Sites.Staging_logout, Sites.Prod_logout]
 
 # Grab text from launcher
-WB = openpyxl.load_workbook(Paths.XLSX)
+currentdir = os.getcwd()
+WB = openpyxl.load_workbook(f"{currentdir}/List.xlsx")
 SHEET = WB.active
 ROWNUM = SHEET.max_row
 
-domain = SHEET.cell(row=ROWNUM, column=2).value
-key = SHEET.cell(row=ROWNUM, column=3).value
-new_pl = SHEET.cell(row=ROWNUM, column=4).value
-new_en = SHEET.cell(row=ROWNUM, column=5).value
+Keys = []
+Domains = []
+New_pl = []
+New_en = []
+
+colDict = {1: Domains, 2: Keys, 5: New_pl, 6: New_en}
+
+for colNum, obj in colDict.items():
+    for row in SHEET.iter_rows(min_row=2, min_col=colNum, max_col=colNum, max_row=ROWNUM):
+        for cell in row:
+            obj.append(cell.value)
 
 
 def create_new_pl():
-    """Create New polish translation for the key"""
-    fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
-    fa_plus.click()
-    create_key = DRIVER.find_element_by_id("create-key")
-    create_message = DRIVER.find_element_by_id("create-message")
-    create_key.click()
-    create_key.clear()
-    create_key.send_keys(str(key))
-    create_message.click()
-    create_message.clear()
-    create_message.send_keys(str(new_pl))
-    create_message.send_keys(Keys.RETURN)
+    for key, new_pl in zip(Keys, New_pl):
+        """Create New polish translation for the key"""
+        fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
+        fa_plus.click()
+        create_key = DRIVER.find_element_by_id("create-key")
+        create_message = DRIVER.find_element_by_id("create-message")
+        create_key.click()
+        create_key.clear()
+        create_key.send_keys(str(key))
+        create_message.click()
+        create_message.clear()
+        create_message.send_keys(str(new_pl))
+        create_message.send_keys(Keys.RETURN)
 
 
 def create_new():
-    """Create New english translation for the key(all languages, but polish and ref)"""
-    fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
-    fa_plus.click()
-    create_key = DRIVER.find_element_by_id("create-key")
-    create_message = DRIVER.find_element_by_id("create-message")
-    create_key.click()
-    create_key.clear()
-    create_key.send_keys(str(key))
-    create_message.click()
-    create_message.clear()
-    create_message.send_keys(str(new_en))
-    create_message.send_keys(Keys.RETURN)
+    for key, new_en in zip(Keys, New_en):
+        """Create New english translation for the key(all languages, but polish and ref)"""
+        fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
+        fa_plus.click()
+        create_key = DRIVER.find_element_by_id("create-key")
+        create_message = DRIVER.find_element_by_id("create-message")
+        create_key.click()
+        create_key.clear()
+        create_key.send_keys(str(key))
+        create_message.click()
+        create_message.clear()
+        create_message.send_keys(str(new_en))
+        create_message.send_keys(Keys.RETURN)
 
 
 def create_new_ref():
-    """Create New REF translation for the key"""
-    fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
-    fa_plus.click()
-    create_key = DRIVER.find_element_by_id("create-key")
-    create_message = DRIVER.find_element_by_id("create-message")
-    create_key.click()
-    create_key.clear()
-    create_key.send_keys(str(key))
-    create_message.click()
-    create_message.clear()
-    create_message.send_keys(str(key))
-    create_message.send_keys(Keys.RETURN)
+    for key in Keys:
+        """Create New REF translation for the key"""
+        fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
+        fa_plus.click()
+        create_key = DRIVER.find_element_by_id("create-key")
+        create_message = DRIVER.find_element_by_id("create-message")
+        create_key.click()
+        create_key.clear()
+        create_key.send_keys(str(key))
+        create_message.click()
+        create_message.clear()
+        create_message.send_keys(str(key))
+        create_message.send_keys(Keys.RETURN)
 
 
 def translate():
     """Actual translation execution code- takes domain from excel file and takes credentials from Accounts
      file, then executes script on both staging and prod site"""
     DRIVER.start_client()
-    for site, login, password in zip(websites_list, logins_list, passwords_list):
+    for site, login, password, domain in zip(websites_list, logins_list, passwords_list, Domains):
         while True:
             try:
                 DRIVER.get(site)

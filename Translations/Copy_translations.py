@@ -1,5 +1,7 @@
 import time
+import os
 import sys
+import os.path
 import psutil
 import selenium
 import webdriver_manager
@@ -16,16 +18,16 @@ from configs import Sites
 
 platform = platform.system()
 
-if platform == "win32" or "Windows":
+if platform == "win32" or platform == "Windows":
     from configs.Windows import Paths
-    
-elif platform == "Linux" or "Linux2":
+
+elif platform == "Linux" or platform == "Linux2":
     from configs.Linux import Paths
 
 
 copy_list = [Sites.Prod_Copy, Sites.Staging_Copy]
 
-logout_list = [Sites.Staging_logout, Sites.Dev_logout, Sites.Prod_logout]
+logout_list = [Sites.Staging_logout, Sites.Prod_logout]
 
 websites_list = [Sites.Prod, Sites.Staging]
 
@@ -85,17 +87,15 @@ def copy_all():
 
 copy_all()
 
-if platform == "win32" or "Windows":
+if platform == "win32" or platform == "Windows":
     print("Script completed successfully")
     DRIVER.stop_client()
     DRIVER.quit()
     kill_driver()
     playsound(str(Paths.sound))
-    
+
 elif platform == "Linux" or platform == "Linux2":
     DRIVER.stop_client()
     DRIVER.quit()
     kill_driver()
     print("Script completed successfully")
-
-

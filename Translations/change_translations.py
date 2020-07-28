@@ -39,7 +39,7 @@ logins_list = [Accounts.Prod_user_1, Accounts.Staging_user_2]
 passwords_list = [Accounts.Prod_Password_1, Accounts.Staging_Password_2]
 domains_name = ["", "staging."]
 
-language_code = ["en", "de", "sk", "tr", "ru", "cz", "nl", "hu", "ro", "zh", "pt", "es"]
+language_code = ["en", "de", "sk", "tr", "ru", "cn", "nl", "hu", "ro", "zh", "pt", "es"]
 
 # Grab text from launcher
 WB = openpyxl.load_workbook(Paths.XLSX)

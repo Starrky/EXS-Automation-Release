@@ -410,7 +410,7 @@ class Ui_Dialog2:
                 import Translations.Loop_add
 
             if text == 'Change translations from file':
-                import Translations.Loop_chnage
+                import Translations.Loop_change
 
         self.comboBox = QtWidgets.QComboBox(Dialog)
         self.comboBox.setGeometry(QtCore.QRect(110, 210, 190, 21))

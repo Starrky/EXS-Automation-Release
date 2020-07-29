@@ -1,7 +1,7 @@
-openpyxl
-selenium
-playsound
-psutil
+openpyxl~=3.0.4
+selenium~=3.141.0
+playsound~=1.2.2
+psutil~=5.7.0
 pip
 configparser
 certifi
@@ -9,7 +9,7 @@ chardet
 idna
 urllib3
 setuptools
-PyQt5
+PyQt5~=5.14.1
 webdriver_manager
 vext
 vext.gi
@@ -18,3 +18,5 @@ PyGObject
 autoit
 runpy2
 
+
+pandas~=1.0.5

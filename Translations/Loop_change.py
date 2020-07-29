@@ -5,12 +5,15 @@ import os
 import sys
 import time
 from urllib.parse import urljoin
-import openpyxl
+import pandas as pd
 import psutil
 import selenium
 import webdriver_manager.chrome
 from playsound import playsound
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 import platform
 
@@ -21,6 +24,7 @@ from configs import Sites
 
 # Driver settings
 DRIVER = webdriver.Chrome(webdriver_manager.chrome.ChromeDriverManager().install())
+wait = WebDriverWait(DRIVER, 20)
 
 platform = platform.system()
 if platform == "win32" or platform == "Windows":
@@ -32,28 +36,28 @@ elif platform == "Linux" or platform == "Linux2":
 websites_list = [Sites.Prod, Sites.Staging]
 logins_list = [Accounts.Prod_user_1, Accounts.Staging_user_2]
 passwords_list = [Accounts.Prod_Password_1, Accounts.Staging_Password_2]
-
 language_code = ["en", "de", "sk", "tr", "ru", "cs", "nl", "hu", "ro", "zh", "pt", "es"]
 
 # Grab text from launcher
 currentdir = os.getcwd()
-WB = openpyxl.load_workbook(f"{currentdir}/List.xlsx")
-SHEET = WB.active
-ROWNUM = SHEET.max_row
+data = pd.read_excel(f"{currentdir}/List.xlsx")
+data.dropna(inplace=True)
+data["key"] = data["key"].str.split(" ", n=1, expand=True)
+data["Domain"] = data["Domain"].str.split(" ", n=1, expand=True)
 
-Keys = []
-Domains = []
-Old_pl = []
-Old_en = []
-New_pl = []
-New_en = []
+Keys_List = data["key"].tolist()
+Domains = data["Domain"].tolist()
+Old_pl = data["old pl"].tolist()
+Old_en = data["old en"].tolist()
+New_pl = data["new pl"].tolist()
+New_en = data["new en"].tolist()
 
-colDict = {1: Domains, 2: Keys, 3: Old_pl, 4: Old_en, 5: New_pl, 6: New_en}
-
-for colNum, obj in colDict.items():
-    for row in SHEET.iter_rows(min_row=2, min_col=colNum, max_col=colNum, max_row=ROWNUM):
-        for cell in row:
-            obj.append(cell.value)
+print(Keys_List)
+print(Domains)
+print(Old_pl)
+print(Old_en)
+print(New_pl)
+print(New_en)
 
 
 def kill_driver():
@@ -70,132 +74,23 @@ def kill_driver():
                 break
 
 
-def create_new_pl():
-    for key, new_pl in zip(Keys, New_pl):
-        """Create New polish translation for the key"""
-        fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
-        fa_plus.click()
-        create_key = DRIVER.find_element_by_id("create-key")
-        create_message = DRIVER.find_element_by_id("create-message")
-        create_key.click()
-        create_key.clear()
-        create_key.send_keys(str(key))
-        create_message.click()
-        create_message.clear()
-        create_message.send_keys(str(new_pl))
-        create_message.send_keys(Keys.RETURN)
-
-
 def create_new():
-    for key, new_en in zip(Keys, New_en):
-        """Create New english translation for the key(all languages, but polish and ref)"""
-        fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
-        fa_plus.click()
-        create_key = DRIVER.find_element_by_id("create-key")
-        create_message = DRIVER.find_element_by_id("create-message")
-        create_key.click()
-        create_key.clear()
-        create_key.send_keys(str(key))
-        create_message.click()
-        create_message.clear()
-        create_message.send_keys(str(new_en))
-        create_message.send_keys(Keys.RETURN)
-
-
-def create_new_ref():
-    for key in Keys:
-        """Create New REF translation for the key"""
-        fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
-        fa_plus.click()
-        create_key = DRIVER.find_element_by_id("create-key")
-        create_message = DRIVER.find_element_by_id("create-message")
-        create_key.click()
-        create_key.clear()
-        create_key.send_keys(str(key))
-        create_message.click()
-        create_message.clear()
-        create_message.send_keys(str(key))
-        create_message.send_keys(Keys.RETURN)
-
-
-def change():
-    for key, old_pl, old_en, new_pl, new_en in zip(Keys, Old_pl, Old_en, New_pl, New_en):
-        """Change the translation for the key if the value is equal to Old_eng or Old_pl(won't change
-        translation that's different so already translated keys for other languages stays untouched"""
+    for key, new_en in zip(Keys_List, New_en):
         try:
-            value = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']") \
-                .get_attribute('value')
-            field = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']")
+            fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
+            fa_plus.click()
+            create_key = DRIVER.find_element_by_id("create-key")
+            create_message = DRIVER.find_element_by_id("create-message")
+            create_key.click()
+            create_key.clear()
+            create_key.send_keys(str(key))
+            create_message.click()
+            create_message.clear()
+            create_message.send_keys(str(new_en))
+            create_message.send_keys(Keys.RETURN)
 
         except selenium.common.exceptions.NoSuchElementException:
-            create_new()
-
-        else:
-
-            if value == old_pl:
-                field.clear()
-                field.send_keys(str(new_en))
-                DRIVER.find_element_by_id(str(key)).click()
-
-            elif value == old_en:
-                field.clear()
-                field.send_keys(str(new_en))
-                DRIVER.find_element_by_id(str(key)).click()
-
-
-def change_ref():
-    for key in Keys:
-        """Change the ref translation if key is not equal to key name(e.g if some1 did put pl/ en
-        translation instead of app.key"""
-        try:
-            value = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']") \
-                .get_attribute('value')
-
-            field = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']")
-
-        except selenium.common.exceptions.NoSuchElementException:
-            create_new_ref()
-
-        else:
-
-            if value != key:
-                field.clear()
-                field.send_keys(str(key))
-                DRIVER.find_element_by_id(str(key)).click()
-
-            else:
-                create_new_ref()
-
-
-def change_pl():
-    for key, old_pl, old_en, new_pl, new_en in zip(Keys, Old_pl, Old_en, New_pl, New_en):
-        """Change polish translation for the key if it's translation is equal or different than Old_pl
-        (so pretty much always changes it)"""
-        try:
-            field = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']")
-            value = field.get_attribute('value')
-            # print(f"value is {value}")
-        except selenium.common.exceptions.NoSuchElementException:
-            create_new_pl()
-
-        else:
-            time.sleep(2)
-
-            if value == old_pl:
-                # print(f"{value} == {old_pl}")
-                field.clear()
-                field.send_keys(str(new_pl))
-                DRIVER.find_element_by_id(str(key)).click()
-
-            elif value != new_pl:
-                # print(f"{value} != {new_pl}")
-                field.clear()
-                field.send_keys(str(new_pl))
-                DRIVER.find_element_by_id(str(key)).click()
-
-            else:
-                print(f"{key} not found")
-                create_new_pl()
+            continue
 
 
 def translate():
@@ -203,40 +98,128 @@ def translate():
     other file, then executes script on both staging and prod site"""
     DRIVER.start_client()
     for site, login, password, domain in zip(websites_list, logins_list, passwords_list, Domains):
-        while True:
+        try:
+            DRIVER.get(site)
+            Password_field = DRIVER.find_element_by_id("password")
+            username = DRIVER.find_element_by_id("username")
+            username.click()
+            username.clear()
+            username.send_keys(login)
+            Password_field.click()
+            Password_field.clear()
+            Password_field.send_keys(password)
+            DRIVER.find_element_by_id("_submit").click()
             try:
-                DRIVER.get(site)
-                Password_field = DRIVER.find_element_by_id("password")
-                username = DRIVER.find_element_by_id("username")
-                username.click()
-                username.clear()
-                username.send_keys(login)
-                Password_field.click()
-                Password_field.clear()
-                Password_field.send_keys(password)
-                DRIVER.find_element_by_id("_submit").click()
-                while True:
-                    try:
-                        for lang in Domains:
-                            DRIVER.get(urljoin(f'{site}/translations/app/{lang}/', domain))
-                            change()
-                            time.sleep(2)
-                    finally:
-                        break
+                Cookies = wait.until(EC.element_to_be_clickable((By.XPATH,
+                                                                 "/html/body/div[2]/div[1]/div[1]/div/i")))
+                Cookies.click()
 
-                DRIVER.get(urljoin(f'{site}/translations/app/pl/', domain))
-                change_pl()
-
-                DRIVER.get(urljoin(f'{site}/translations/app/ref/', domain))
-                change_ref()
-
-            except selenium.common.exceptions.ElementClickInterceptedException:
-                time.sleep(5)
-                continue
-
-            finally:
+            except selenium.common.exceptions.TimeoutException:
                 break
-        DRIVER.get(f"{site}/logout")
+
+            """Change translations on other languages"""
+            try:
+                for lang in language_code:
+                    DRIVER.get(urljoin(f'{site}/translations/app/{lang}/', domain))
+                    for key, old_pl, old_en, new_pl, new_en in zip(Keys_List, Old_pl, Old_en, New_pl, New_en):
+                        while True:
+                            value = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']") \
+                            .get_attribute('value')
+                            field = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']")
+                            translation = value.lstrip().rstrip()
+
+                            print(f"value for {key} is {translation}")
+
+                            if translation == old_pl:
+                                field.clear()
+                                field.send_keys(str(new_pl))
+                                DRIVER.find_element_by_id(str(key)).click()
+                                print(f" PL changed to {new_pl}")
+                                time.sleep(1)
+                                break
+
+                            if translation == old_en:
+                                field.clear()
+                                field.send_keys(str(new_en))
+                                DRIVER.find_element_by_id(str(key)).click()
+                                print(f"EN changed to {new_en}")
+                                time.sleep(1)
+                                break
+
+                            elif translation == new_en or translation == new_pl:
+                                print("item is already translated, continuing")
+                                time.sleep(1)
+                                break
+
+                            else:
+                                break
+
+            except selenium.common.exceptions.NoSuchElementException:
+                break
+
+            """Change polish translation"""
+            try:
+                DRIVER.get(urljoin(f'{site}/translations/app/pl/', domain))
+                for key, old_pl, old_en, new_pl in zip(Keys_List, Old_pl, Old_en, New_pl):
+                    while True:
+                        value = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']") \
+                        .get_attribute('value')
+                        field = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']")
+                        translation = value.lstrip().rstrip()
+
+                        print(f"value for {key} is {translation}")
+
+                        if translation == old_en or translation == old_pl:
+                            field.clear()
+                            field.send_keys(str(new_pl))
+                            DRIVER.find_element_by_id(str(key)).click()
+                            print(f"PL changed to {new_pl}")
+                            time.sleep(1)
+                            break
+
+                        if translation == old_en and translation == old_pl:
+                            field.clear()
+                            field.send_keys(str(new_pl))
+                            DRIVER.find_element_by_id(str(key)).click()
+                            print(f"PL changed to {new_pl}")
+                            time.sleep(1)
+                            break
+
+                        else:
+                            break
+
+            except selenium.common.exceptions.NoSuchElementException:
+                break
+
+            """Change REF translation"""
+            DRIVER.get(urljoin(f'{site}/translations/app/ref/', domain))
+            for key in Keys_List:
+                try:
+                    fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
+                    fa_plus.click()
+                    create_key = DRIVER.find_element_by_id("create-key")
+                    create_message = DRIVER.find_element_by_id("create-message")
+                    create_key.click()
+                    create_key.clear()
+                    create_key.send_keys(str(key))
+                    create_message.click()
+                    create_message.clear()
+                    create_message.send_keys(str(key))
+                    create_message.send_keys(Keys.RETURN)
+                finally:
+                    break
+
+            DRIVER.get(f'{site}/logout')
+            break
+
+        except selenium.common.exceptions.ElementClickInterceptedException:
+            time.sleep(10)
+            continue
+
+        except selenium.common.exceptions.NoSuchElementException:
+            DRIVER.get(f"{site}/logout")
+            time.sleep(5)
+            continue
 
 
 translate()

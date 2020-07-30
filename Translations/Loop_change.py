@@ -116,7 +116,7 @@ def translate():
                     DRIVER.get(urljoin(f'{site}/translations/app/{lang}/', domain))
                     url = DRIVER.current_url
                     website_domain = url.rsplit("/", 1)[1]
-
+                    
                     if website_domain == domain:
                         print(f"{website_domain} == {domain}")
                         for key, old_pl, old_en, new_pl, new_en in zip(Keys_List, Old_pl, Old_en, New_pl, New_en):
@@ -154,7 +154,7 @@ def translate():
                                 field.clear()
                                 field.send_keys(str(new_en))
                                 DRIVER.find_element_by_id(str(key)).click()
-                                print(f"change: PL changed to {new_en}")
+                                print(f"change: changed to {new_en}")
                                 time.sleep(1)
                                 break
 
@@ -182,29 +182,31 @@ def translate():
                             field = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']")
                             translation = value.lstrip().rstrip()
 
-                            if website_domain != domain:
-                                DRIVER.get(urljoin(f'{site}/translations/app/{lang}/', domain))
-                                value = DRIVER.find_element_by_css_selector(
-                                    f"textarea[data-key='{key}']").get_attribute(
-                                    'value')
-                                field = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']")
-                                translation = value.lstrip().rstrip()
+                            if translation == old_en or translation == old_pl:
+                                field.clear()
+                                field.send_keys(str(new_pl))
+                                DRIVER.find_element_by_id(str(key)).click()
+                                print(f"change_pl: PL changed to {new_pl}")
+                                time.sleep(1)
+                                break
 
-                                if translation == old_en or translation == old_pl:
-                                    field.clear()
-                                    field.send_keys(str(new_pl))
-                                    DRIVER.find_element_by_id(str(key)).click()
-                                    print(f"change_pl: PL changed to {new_pl}")
-                                    time.sleep(1)
-                                    break
+                            if translation == old_en and translation == old_pl:
+                                field.clear()
+                                field.send_keys(str(new_pl))
+                                DRIVER.find_element_by_id(str(key)).click()
+                                print(f"change_pl: PL changed to {new_pl}")
+                                time.sleep(1)
+                                break
 
-                                if translation == old_en and translation == old_pl:
-                                    field.clear()
-                                    field.send_keys(str(new_pl))
-                                    DRIVER.find_element_by_id(str(key)).click()
-                                    print(f"change_pl: PL changed to {new_pl}")
-                                    time.sleep(1)
-                                    break
+                    if website_domain != domain:
+                        for key, old_pl, old_en, new_pl in zip(Keys_List, Old_pl, Old_en, New_pl):
+                            DRIVER.get(urljoin(f'{site}/translations/app/{lang}/', domain))
+                            value = DRIVER.find_element_by_css_selector(
+                                f"textarea[data-key='{key}']").get_attribute(
+                                'value')
+                            field = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']")
+                            translation = value.lstrip().rstrip()
+
                             if translation == old_en or translation == old_pl:
                                 field.clear()
                                 field.send_keys(str(new_pl))

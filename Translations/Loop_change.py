@@ -110,61 +110,39 @@ def translate():
             except selenium.common.exceptions.TimeoutException:
                 break
 
-            """Change translations on other languages"""
             try:
-                for lang, domain in zip(language_code, Domains):
-                    DRIVER.get(urljoin(f'{site}/translations/app/{lang}/', domain))
+                for domain in Domains:
                     url = DRIVER.current_url
                     website_domain = url.rsplit("/", 1)[1]
-                    
-                    if website_domain == domain:
-                        print(f"{website_domain} == {domain}")
-                        for key, old_pl, old_en, new_pl, new_en in zip(Keys_List, Old_pl, Old_en, New_pl, New_en):
-                            value = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']").get_attribute(
-                                'value')
-                            field = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']")
-                            translation = value.lstrip().rstrip()
+                    print(f"{website_domain} == {domain}")
+                    for lang in language_code:
+                        if website_domain != domain:
+                            print(f"{website_domain} != {domain}")
+                            DRIVER.get(urljoin(f'{site}/translations/app/{lang}/', domain))
 
-                            if translation == old_pl or translation == old_en:
-                                field.clear()
-                                field.send_keys(str(new_en))
-                                DRIVER.find_element_by_id(str(key)).click()
-                                print(f"change: PL changed to {new_en}")
-                                time.sleep(1)
-                                break
+                            for key, old_pl, old_en, new_pl, new_en in zip(Keys_List, Old_pl, Old_en, New_pl, New_en):
+                                value = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']").get_attribute(
+                                    'value')
+                                field = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']")
+                                translation = value.lstrip().rstrip()
 
-                            if translation == new_en or translation == new_pl:
-                                print("change: item is already translated, continuing")
-                                time.sleep(1)
-                                break
+                                if translation == old_pl or translation == old_en:
+                                    field.clear()
+                                    field.send_keys(str(new_en))
+                                    DRIVER.find_element_by_id(str(key)).click()
+                                    print(f"change: changed to {new_en}")
+                                    time.sleep(1)
+                                    continue
 
-                            else:
-                                break
+                                if translation == new_en or translation == new_pl:
+                                    print("change: item is already translated, continuing")
+                                    time.sleep(1)
+                                    continue
 
-                    if website_domain != domain:
-                        print(f"{website_domain} != {domain}")
-                        DRIVER.get(urljoin(f'{site}/translations/app/{lang}/', domain))
-                        for key, old_pl, old_en, new_pl, new_en in zip(Keys_List, Old_pl, Old_en, New_pl, New_en):
-                            value = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']").get_attribute(
-                                'value')
-                            field = DRIVER.find_element_by_css_selector(f"textarea[data-key='{key}']")
-                            translation = value.lstrip().rstrip()
-
-                            if translation == old_pl or translation == old_en:
-                                field.clear()
-                                field.send_keys(str(new_en))
-                                DRIVER.find_element_by_id(str(key)).click()
-                                print(f"change: changed to {new_en}")
-                                time.sleep(1)
-                                break
-
-                            if translation == new_en or translation == new_pl:
-                                print("change: item is already translated, continuing")
-                                time.sleep(1)
-                                break
-
-                            else:
-                                break
+                                else:
+                                    continue
+                            continue
+                    continue
 
             except selenium.common.exceptions.NoSuchElementException:
                 break
@@ -252,10 +230,10 @@ def translate():
             time.sleep(10)
             continue
 
-        except selenium.common.exceptions.NoSuchElementException:
-            DRIVER.get(f"{site}/logout")
-            time.sleep(5)
-            continue
+        # except selenium.common.exceptions.NoSuchElementException:
+        #     DRIVER.get(f"{site}/logout")
+        #     time.sleep(5)
+        #     break
 
 
 translate()

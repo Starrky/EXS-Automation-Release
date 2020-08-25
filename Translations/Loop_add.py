@@ -60,12 +60,12 @@ WB = openpyxl.load_workbook(f"{currentdir}/List.xlsx")
 SHEET = WB.active
 ROWNUM = SHEET.max_row
 
-Keys = []
+Keys_List = []
 Domains = []
 New_pl = []
 New_en = []
 
-colDict = {1: Domains, 2: Keys, 5: New_pl, 6: New_en}
+colDict = {1: Domains, 2: Keys_List, 5: New_pl, 6: New_en}
 
 for colNum, obj in colDict.items():
     for row in SHEET.iter_rows(min_row=2, min_col=colNum, max_col=colNum, max_row=ROWNUM):
@@ -74,10 +74,10 @@ for colNum, obj in colDict.items():
 
 
 def create_new_pl():
-    for key, new_pl in zip(Keys, New_pl):
-        """Create New polish translation for the key"""
-        fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
-        fa_plus.click()
+    """Create New polish translation for the key"""
+    fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
+    fa_plus.click()
+    for key, new_pl in zip(Keys_List, New_pl):
         create_key = DRIVER.find_element_by_id("create-key")
         create_message = DRIVER.find_element_by_id("create-message")
         create_key.click()
@@ -87,13 +87,15 @@ def create_new_pl():
         create_message.clear()
         create_message.send_keys(str(new_pl))
         create_message.send_keys(Keys.RETURN)
+        time.sleep(4)
 
 
-def create_new():
-    for key, new_en in zip(Keys, New_en):
-        """Create New english translation for the key(all languages, but polish and ref)"""
-        fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
-        fa_plus.click()
+def create_new(): 
+    """Create New english translation for the key(all languages, but polish and ref)"""
+    fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
+    fa_plus.click()
+
+    for key, new_en in zip(Keys_List, New_en):
         create_key = DRIVER.find_element_by_id("create-key")
         create_message = DRIVER.find_element_by_id("create-message")
         create_key.click()
@@ -103,13 +105,14 @@ def create_new():
         create_message.clear()
         create_message.send_keys(str(new_en))
         create_message.send_keys(Keys.RETURN)
+        time.sleep(4)
 
 
 def create_new_ref():
-    for key in Keys:
-        """Create New REF translation for the key"""
-        fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
-        fa_plus.click()
+    """Create New REF translation for the key"""
+    fa_plus = DRIVER.find_element_by_css_selector(".fa-plus")
+    fa_plus.click()
+    for key in Keys_List:
         create_key = DRIVER.find_element_by_id("create-key")
         create_message = DRIVER.find_element_by_id("create-message")
         create_key.click()
@@ -119,7 +122,7 @@ def create_new_ref():
         create_message.clear()
         create_message.send_keys(str(key))
         create_message.send_keys(Keys.RETURN)
-
+        time.sleep(4)
 
 def translate():
     """Actual translation execution code- takes domain from excel file and takes credentials from Accounts

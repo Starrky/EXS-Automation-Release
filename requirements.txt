@@ -9,7 +9,7 @@ chardet
 idna
 urllib3
 setuptools
-PyQt5~=5.14.1
+PyQt5~=5.15.3
 webdriver_manager
 vext
 vext.gi
